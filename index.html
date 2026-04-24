@@ -7,6 +7,8 @@
     <!-- Google Fonts & Font Awesome 6 -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PDF.js for PDF preview -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -23,7 +25,6 @@
             position: relative;
         }
 
-        /* soft main card - fully responsive */
         .dream-container {
             max-width: 1400px;
             margin: 0 auto;
@@ -37,7 +38,6 @@
             z-index: 2;
         }
 
-        /* responsive padding */
         @media (min-width: 1024px) {
             .dream-container {
                 padding: 2rem 2.2rem;
@@ -57,7 +57,6 @@
             }
         }
 
-        /* header with feminine vibe & exact wording - responsive */
         .girly-header {
             display: flex;
             justify-content: space-between;
@@ -97,14 +96,6 @@
             text-shadow: 0 2px 6px #fbc9dd;
         }
 
-        .soft-tagline {
-            font-size: 0.75rem;
-            font-weight: 500;
-            color: #bc8da4;
-            margin-top: 4px;
-            letter-spacing: 0.3px;
-        }
-
         .exact-phrase {
             font-size: 0.65rem;
             font-weight: 500;
@@ -117,7 +108,6 @@
             letter-spacing: 0.2px;
         }
 
-        /* stats panel - responsive */
         .stats-flower {
             background: rgba(255, 242, 247, 0.85);
             border-radius: 3rem;
@@ -155,7 +145,6 @@
             color: #e48aaa;
         }
 
-        /* 2 column layout - fully responsive */
         .dashboard-girly {
             display: flex;
             flex-wrap: wrap;
@@ -168,10 +157,9 @@
             }
         }
 
-        /* add task card */
         .add-card {
             flex: 1.2;
-            min-width: 260px;
+            min-width: 280px;
             background: #fffbfd;
             border-radius: 1.8rem;
             padding: 1.3rem;
@@ -232,13 +220,58 @@
             color: #3d2b35;
         }
 
-        @media (min-width: 768px) {
-            .input-flower input, 
-            .input-flower textarea,
-            .input-flower select {
-                padding: 12px 15px;
-                font-size: 0.9rem;
-            }
+        .file-upload-area {
+            border: 2px dashed #e6afc8;
+            background: #fff9fb;
+            border-radius: 1.5rem;
+            padding: 0.8rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-top: 0.5rem;
+        }
+
+        .file-upload-area:hover {
+            background: #fff0f5;
+            border-color: #d48aaa;
+        }
+
+        .file-upload-area i {
+            font-size: 1.2rem;
+            color: #cb8baa;
+            margin-right: 8px;
+        }
+
+        .file-upload-area span {
+            font-size: 0.75rem;
+            color: #bc8da4;
+        }
+
+        .file-preview {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #fceef4;
+            padding: 6px 10px;
+            border-radius: 1rem;
+            margin-top: 8px;
+            font-size: 0.7rem;
+        }
+
+        .file-preview i {
+            font-size: 0.9rem;
+        }
+
+        .remove-file {
+            margin-left: auto;
+            cursor: pointer;
+            color: #cb98b3;
+            padding: 2px 6px;
+            border-radius: 50%;
+        }
+
+        .remove-file:hover {
+            background: #ffd9e8;
         }
 
         .row-petal {
@@ -271,10 +304,9 @@
             margin-top: 6px;
         }
 
-        /* task area */
         .tasks-gallery {
             flex: 2.5;
-            min-width: 260px;
+            min-width: 280px;
         }
 
         @media (max-width: 640px) {
@@ -320,11 +352,10 @@
             white-space: nowrap;
         }
 
-        @media (max-width: 480px) {
-            .filter-btn-soft {
-                padding: 4px 10px;
-                font-size: 0.7rem;
-            }
+        .filter-btn-soft.active {
+            background: white;
+            color: #dd8aae;
+            box-shadow: 0 4px 10px #f8cedf;
         }
 
         .task-list-scroll {
@@ -336,13 +367,6 @@
             padding-right: 5px;
         }
 
-        @media (min-height: 800px) {
-            .task-list-scroll {
-                max-height: 60vh;
-            }
-        }
-
-        /* task item - fully responsive */
         .task-flower-item {
             background: rgba(255, 248, 250, 0.96);
             backdrop-filter: blur(4px);
@@ -356,12 +380,6 @@
             transition: all 0.2s;
             border: 1px solid #ffe5f0;
             box-shadow: 0 5px 12px #ffebf1;
-        }
-
-        @media (min-width: 768px) {
-            .task-flower-item {
-                padding: 1rem 1.2rem;
-            }
         }
 
         @media (max-width: 550px) {
@@ -388,12 +406,6 @@
             flex-wrap: wrap;
         }
 
-        @media (min-width: 768px) {
-            .task-title-row {
-                font-size: 1rem;
-            }
-        }
-
         .task-title-text {
             word-break: break-word;
         }
@@ -410,12 +422,33 @@
             word-break: break-word;
         }
 
+        .file-attachment {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: #eef2fc;
+            padding: 4px 10px;
+            border-radius: 1.5rem;
+            font-size: 0.65rem;
+            color: #7a5a70;
+            cursor: pointer;
+            width: fit-content;
+            margin-top: 4px;
+            transition: all 0.2s;
+        }
+
+        .file-attachment:hover {
+            background: #e3ddf2;
+            transform: scale(1.02);
+        }
+
         .task-meta-badge {
             display: flex;
             gap: 10px;
             font-size: 0.65rem;
             font-weight: 600;
             flex-wrap: wrap;
+            align-items: center;
         }
 
         .time-flower {
@@ -462,13 +495,6 @@
             justify-content: center;
         }
 
-        @media (min-width: 768px) {
-            .action-buttons button {
-                font-size: 1.2rem;
-                width: 34px;
-            }
-        }
-
         .empty-dream {
             text-align: center;
             padding: 2rem 1rem;
@@ -486,7 +512,118 @@
             color: #deafc4;
         }
 
-        /* realistic flower decorations - floating responsive flowers */
+        /* Modal for file preview */
+        .file-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.85);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+
+        .file-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 2rem;
+            max-width: 90vw;
+            max-height: 90vh;
+            width: 90%;
+            height: 85%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            animation: modalFadeIn 0.3s ease;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(95deg, #f5b0cb, #e494b6);
+            color: white;
+            border-radius: 2rem 2rem 0 0;
+        }
+
+        .modal-header h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-modal:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .modal-body {
+            flex: 1;
+            overflow: auto;
+            padding: 1rem;
+            background: #faf5f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-body img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            border-radius: 1rem;
+        }
+
+        .modal-body canvas {
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .pdf-controls {
+            padding: 0.5rem;
+            text-align: center;
+            background: #f0e8ed;
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .pdf-controls button {
+            background: #cb8baa;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 2rem;
+            color: white;
+            cursor: pointer;
+            font-size: 0.75rem;
+        }
+
         .floating-flower {
             position: fixed;
             pointer-events: none;
@@ -494,15 +631,12 @@
             font-size: clamp(2rem, 8vw, 3.5rem);
             opacity: 0.5;
             animation: swayFloat 12s infinite ease-in-out;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.05));
         }
 
-        /* different flower positions and animations */
-        .flower-1 { bottom: 2%; left: 1%; animation-duration: 14s; opacity: 0.45; }
-        .flower-2 { top: 8%; right: 2%; animation-duration: 18s; opacity: 0.4; transform: scale(0.9); }
-        .flower-3 { bottom: 15%; right: 3%; animation-duration: 20s; opacity: 0.5; }
-        .flower-4 { top: 20%; left: -1%; animation-duration: 16s; opacity: 0.35; transform: scale(0.8); }
-        .flower-5 { bottom: 30%; left: 3%; animation-duration: 22s; opacity: 0.4; }
+        .flower-1 { bottom: 2%; left: 1%; animation-duration: 14s; }
+        .flower-2 { top: 8%; right: 2%; animation-duration: 18s; transform: scale(0.9); }
+        .flower-3 { bottom: 15%; right: 3%; animation-duration: 20s; }
+        .flower-4 { top: 20%; left: -1%; animation-duration: 16s; transform: scale(0.8); }
 
         @keyframes swayFloat {
             0% { transform: translateY(0px) rotate(0deg); }
@@ -511,16 +645,9 @@
         }
 
         @media (max-width: 768px) {
-            .flower-3, .flower-5 { display: none; }
-            .flower-1, .flower-2, .flower-4 { opacity: 0.3; font-size: 2.2rem; }
+            .flower-3, .flower-4 { display: none; }
         }
 
-        @media (max-width: 480px) {
-            .flower-4 { display: none; }
-            .flower-1, .flower-2 { opacity: 0.25; }
-        }
-
-        /* scrollbar styling */
         .task-list-scroll::-webkit-scrollbar {
             width: 4px;
         }
@@ -536,19 +663,33 @@
 </head>
 <body>
 
-<!-- Realistic floating flower decorations -->
 <div class="floating-flower flower-1">🌼🌸</div>
 <div class="floating-flower flower-2">🌷🌻</div>
 <div class="floating-flower flower-3">🌺🌼</div>
 <div class="floating-flower flower-4">🌸🌿</div>
-<div class="floating-flower flower-5">🌻🌷</div>
+
+<!-- Modal for file preview -->
+<div id="fileModal" class="file-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modalFileName">File Preview</h3>
+            <button class="close-modal" id="closeModalBtn"><i class="fas fa-times"></i></button>
+        </div>
+        <div id="pdfControls" class="pdf-controls" style="display: none;">
+            <button id="prevPage"><i class="fas fa-chevron-left"></i> Previous</button>
+            <span id="pageInfo">Page 1 / 1</span>
+            <button id="nextPage">Next <i class="fas fa-chevron-right"></i></button>
+        </div>
+        <div class="modal-body" id="modalBody">
+            <div id="previewContent"></div>
+        </div>
+    </div>
+</div>
 
 <div class="dream-container">
     <div class="girly-header">
         <div class="title-bloom">
-            <h1><i class="fas fa-calendar-check"></i> JollaiDaily <span style="font-size: 1rem; background: none; color: #da9bbc;">✦</span></h1>
-            <div class="soft-tagline"></div>
-            <!-- exact wording "time managament to do list" appears right here, unchanged -->
+            <h1><i class="fas fa-calendar-check"></i> JollaiDaily<span style="font-size: 1rem; color: #da9bbc;">✦</span></h1>
             <div class="exact-phrase"><i class="fas fa-hourglass-half"></i> time managament to do list</div>
         </div>
         <div class="stats-flower" id="statsPanel">
@@ -559,24 +700,38 @@
     </div>
 
     <div class="dashboard-girly">
-        <!-- left: add new task -->
         <div class="add-card">
             <h3><i class="fas fa-feather-alt"></i> add new task</h3>
             <div class="input-flower">
                 <label>✿ task name *</label>
-                <input type="text" id="taskTitle" placeholder="add task name..." autocomplete="off">
+                <input type="text" id="taskTitle" placeholder="e.g., Review project docs" autocomplete="off">
             </div>
             <div class="input-flower">
                 <label>✿ notes (optional)</label>
-                <textarea id="taskDesc" rows="2" placeholder="add details, ideas..."></textarea>
+                <textarea id="taskDesc" rows="2" placeholder="add details, reminders..."></textarea>
             </div>
+            
+            <div class="input-flower">
+                <label>📎 attach file (PDF, image)</label>
+                <div class="file-upload-area" id="fileUploadArea">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <span>Click to upload PDF or image</span>
+                    <input type="file" id="fileInput" style="display: none;" accept=".pdf,.jpg,.jpeg,.png,.gif,.bmp">
+                </div>
+                <div id="filePreview" class="file-preview" style="display: none;">
+                    <i class="fas fa-file"></i>
+                    <span id="fileName"></span>
+                    <i class="fas fa-times-circle remove-file" id="removeFileBtn"></i>
+                </div>
+            </div>
+
             <div class="row-petal">
                 <div class="input-flower">
                     <label><i class="far fa-calendar-alt"></i> date</label>
                     <input type="date" id="taskDate">
                 </div>
                 <div class="input-flower">
-                    <label><i class="far fa-clock"></i> time (12hr)</label>
+                    <label><i class="far fa-clock"></i> time</label>
                     <input type="time" id="taskTime" step="60">
                 </div>
             </div>
@@ -591,7 +746,6 @@
             <button class="btn-add-girly" id="addTaskBtn"><i class="fas fa-plus-circle"></i> add to my list</button>
         </div>
 
-        <!-- right: task list with filter -->
         <div class="tasks-gallery">
             <div class="filter-bar">
                 <h2><i class="fas fa-clipboard-list"></i> my tasks</h2>
@@ -603,7 +757,7 @@
             </div>
             <div class="task-list-scroll" id="taskList">
                 <div class="empty-dream">
-                    <i class="fas fa-daisy"></i> ✿ your list is quiet. add a new task! ✿
+                    <i class="fas fa-daisy"></i> ✿ your list is quiet. add a task with file! ✿
                 </div>
             </div>
         </div>
@@ -612,11 +766,14 @@
 </div>
 
 <script>
-    // ---------- data model ----------
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    
     let tasks = [];
     let currentFilter = "all";
+    let currentFile = null;
+    let currentPdfDoc = null;
+    let currentPageNum = 1;
 
-    // DOM elements
     const taskListContainer = document.getElementById('taskList');
     const totalSpan = document.getElementById('totalTasks');
     const completedSpan = document.getElementById('completedTasks');
@@ -627,8 +784,20 @@
     const timeInput = document.getElementById('taskTime');
     const prioritySelect = document.getElementById('taskPriority');
     const addBtn = document.getElementById('addTaskBtn');
+    const fileInput = document.getElementById('fileInput');
+    const fileUploadArea = document.getElementById('fileUploadArea');
+    const filePreview = document.getElementById('filePreview');
+    const fileNameSpan = document.getElementById('fileName');
+    const removeFileBtn = document.getElementById('removeFileBtn');
+    const fileModal = document.getElementById('fileModal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const modalBody = document.getElementById('modalBody');
+    const modalFileName = document.getElementById('modalFileName');
+    const pdfControls = document.getElementById('pdfControls');
+    const prevPageBtn = document.getElementById('prevPage');
+    const nextPageBtn = document.getElementById('nextPage');
+    const pageInfo = document.getElementById('pageInfo');
 
-    // Helper: convert 24h string (HH:MM) to 12h format with AM/PM
     function convertTo12HourFormat(time24) {
         if (!time24) return "";
         let [hours, minutes] = time24.split(':');
@@ -639,7 +808,6 @@
         return `${hour12}:${minutes} ${ampm}`;
     }
 
-    // Helper: format date and time for display (always 12hr)
     function formatDateAndTime(dateStr, time24Str) {
         if (!dateStr) return "no date set";
         let display = dateStr;
@@ -650,7 +818,6 @@
         return display;
     }
 
-    // Helper: set default time to current time in 24h (HTML time input uses 24h)
     function setDefaultDateTime() {
         if (!dateInput.value) {
             const today = new Date();
@@ -668,9 +835,84 @@
     }
     setDefaultDateTime();
 
-    // LocalStorage
+    fileUploadArea.addEventListener('click', () => fileInput.click());
+    fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+            currentFile = e.target.files[0];
+            fileNameSpan.innerText = currentFile.name;
+            filePreview.style.display = 'flex';
+        }
+    });
+
+    removeFileBtn.addEventListener('click', () => {
+        currentFile = null;
+        fileInput.value = '';
+        filePreview.style.display = 'none';
+    });
+
+    function fileToBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    async function previewFile(base64Data, fileName, fileType) {
+        modalFileName.innerText = fileName;
+        modalBody.innerHTML = '<div style="text-align:center; padding:2rem;"><i class="fas fa-spinner fa-pulse"></i> Loading preview...</div>';
+        pdfControls.style.display = 'none';
+        fileModal.classList.add('active');
+        
+        if (fileType === 'application/pdf') {
+            pdfControls.style.display = 'flex';
+            const pdfData = atob(base64Data.split(',')[1]);
+            const loadingTask = pdfjsLib.getDocument({ data: new Uint8Array([...pdfData].map(c => c.charCodeAt(0))), useSystemFonts: true });
+            currentPdfDoc = await loadingTask.promise;
+            currentPageNum = 1;
+            await renderPdfPage(currentPageNum);
+        } else if (fileType.startsWith('image/')) {
+            modalBody.innerHTML = `<img src="${base64Data}" alt="${fileName}" style="max-width:100%; max-height:100%; object-fit:contain;">`;
+        } else {
+            modalBody.innerHTML = `<div style="text-align:center; padding:2rem;"><i class="fas fa-file-alt"></i><br>Preview not available for this file type.<br><a href="${base64Data}" download="${fileName}" style="color:#cb8baa;">Download instead</a></div>`;
+        }
+    }
+
+    async function renderPdfPage(pageNum) {
+        const page = await currentPdfDoc.getPage(pageNum);
+        const viewport = page.getViewport({ scale: 1.5 });
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+        const renderContext = { canvasContext: context, viewport: viewport };
+        await page.render(renderContext).promise;
+        modalBody.innerHTML = '';
+        modalBody.appendChild(canvas);
+        pageInfo.innerText = `Page ${pageNum} / ${currentPdfDoc.numPages}`;
+    }
+
+    prevPageBtn.addEventListener('click', async () => {
+        if (currentPdfDoc && currentPageNum > 1) {
+            currentPageNum--;
+            await renderPdfPage(currentPageNum);
+        }
+    });
+    nextPageBtn.addEventListener('click', async () => {
+        if (currentPdfDoc && currentPageNum < currentPdfDoc.numPages) {
+            currentPageNum++;
+            await renderPdfPage(currentPageNum);
+        }
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+        fileModal.classList.remove('active');
+        currentPdfDoc = null;
+    });
+
     function loadTasksFromStorage() {
-        const stored = localStorage.getItem('bloomdaily_tasks');
+        const stored = localStorage.getItem('sipag_tasks');
         if (stored) {
             try {
                 tasks = JSON.parse(stored);
@@ -682,22 +924,21 @@
                     time: t.time || '',
                     priority: t.priority || 'Medium',
                     completed: t.completed || false,
+                    fileData: t.fileData || null,
+                    fileName: t.fileName || null,
+                    fileType: t.fileType || null,
                     createdAt: t.createdAt || Date.now()
                 }));
             } catch(e) { tasks = []; }
         }
         if (tasks.length === 0) {
-            const today = new Date().toISOString().split('T')[0];
-            const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
-            tasks = [
-               
-            ];
+            tasks = [];
         }
         renderAll();
     }
 
     function saveToLocal() {
-        localStorage.setItem('bloomdaily_tasks', JSON.stringify(tasks));
+        localStorage.setItem('sipag_tasks', JSON.stringify(tasks));
     }
 
     function escapeHtmlSoft(str) {
@@ -738,19 +979,23 @@
         });
 
         if (filtered.length === 0) {
-            taskListContainer.innerHTML = `<div class="empty-dream"><i class="fas fa-leaf"></i> ✿ no tasks here — time to add something beautiful ✿</div>`;
+            taskListContainer.innerHTML = `<div class="empty-dream"><i class="fas fa-leaf"></i> ✿ no tasks here — add a task with file attachment ✿</div>`;
             return;
         }
 
         taskListContainer.innerHTML = filtered.map(task => {
             const completedClass = task.completed ? 'completed-bloom' : '';
-            let priorityClass = '';
-            let priorityLabel = '';
+            let priorityClass = '', priorityLabel = '';
             if (task.priority === 'High') { priorityClass = 'prio-high'; priorityLabel = '🌺 High priority'; }
             else if (task.priority === 'Medium') { priorityClass = 'prio-med'; priorityLabel = '🌸 Medium priority'; }
             else { priorityClass = 'prio-low'; priorityLabel = '🍃 Low priority'; }
             
             const dateTimeDisplay = formatDateAndTime(task.date, task.time);
+            const fileAttachment = (task.fileData && task.fileName) ? 
+                `<div class="file-attachment" data-file="${task.fileData}" data-name="${task.fileName}" data-type="${task.fileType || ''}">
+                    <i class="fas fa-paperclip"></i> 📎 ${task.fileName}
+                </div>` : '';
+            
             return `
                 <div class="task-flower-item ${completedClass}" data-id="${task.id}">
                     <div class="task-info">
@@ -758,6 +1003,7 @@
                             <span class="task-title-text">${escapeHtmlSoft(task.title)}</span>
                         </div>
                         ${task.description ? `<div class="task-desc-text">${escapeHtmlSoft(task.description)}</div>` : ''}
+                        ${fileAttachment}
                         <div class="task-meta-badge">
                             <span class="time-flower"><i class="far fa-clock"></i> ${escapeHtmlSoft(dateTimeDisplay)}</span>
                             <span class="priority-flower ${priorityClass}">${priorityLabel}</span>
@@ -775,31 +1021,32 @@
             const parentDiv = btn.closest('.task-flower-item');
             if (parentDiv) {
                 const id = parseInt(parentDiv.dataset.id);
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    toggleComplete(id);
-                });
+                btn.addEventListener('click', (e) => { e.stopPropagation(); toggleComplete(id); });
             }
         });
         document.querySelectorAll('.delete-task-btn').forEach(btn => {
             const parentDiv = btn.closest('.task-flower-item');
             if (parentDiv) {
                 const id = parseInt(parentDiv.dataset.id);
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    deleteTask(id);
-                });
+                btn.addEventListener('click', (e) => { e.stopPropagation(); deleteTask(id); });
             }
+        });
+        document.querySelectorAll('.file-attachment').forEach(elem => {
+            elem.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const fileData = elem.dataset.file;
+                const fileName = elem.dataset.name;
+                const fileType = elem.dataset.type;
+                if (fileData) {
+                    previewFile(fileData, fileName, fileType);
+                }
+            });
         });
     }
 
     function toggleComplete(id) {
         const task = tasks.find(t => t.id === id);
-        if (task) {
-            task.completed = !task.completed;
-            saveToLocal();
-            renderAll();
-        }
+        if (task) { task.completed = !task.completed; saveToLocal(); renderAll(); }
     }
 
     function deleteTask(id) {
@@ -808,10 +1055,10 @@
         renderAll();
     }
 
-    function addNewTask() {
+    async function addNewTask() {
         let title = titleInput.value.trim();
         if (!title) {
-            alert("please add a task name 🩷");
+            alert("🌸 please add a task name 🩷");
             return;
         }
         let description = descInput.value.trim();
@@ -825,6 +1072,16 @@
         }
         if (!time24) time24 = "09:00";
 
+        let fileData = null;
+        let fileName = null;
+        let fileType = null;
+        
+        if (currentFile) {
+            fileData = await fileToBase64(currentFile);
+            fileName = currentFile.name;
+            fileType = currentFile.type;
+        }
+
         const newTask = {
             id: Date.now(),
             title: title,
@@ -833,14 +1090,22 @@
             time: time24,
             priority: priority,
             completed: false,
+            fileData: fileData,
+            fileName: fileName,
+            fileType: fileType,
             createdAt: Date.now()
         };
         tasks.unshift(newTask);
         saveToLocal();
+        
         titleInput.value = '';
         descInput.value = '';
         setDefaultDateTime();
         prioritySelect.value = 'Medium';
+        currentFile = null;
+        fileInput.value = '';
+        filePreview.style.display = 'none';
+        
         renderAll();
         const scrollDiv = document.querySelector('.task-list-scroll');
         if (scrollDiv) scrollDiv.scrollTop = 0;
@@ -862,16 +1127,11 @@
     }
 
     addBtn.addEventListener('click', addNewTask);
-    titleInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') addNewTask();
-    });
+    titleInput.addEventListener('keypress', (e) => { if (e.key === 'Enter') addNewTask(); });
 
     loadTasksFromStorage();
     initFilters();
-
-    window.addEventListener('focus', () => {
-        renderAll();
-    });
+    window.addEventListener('focus', () => { renderAll(); });
 </script>
 </body>
 </html>
