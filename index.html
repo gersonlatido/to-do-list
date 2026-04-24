@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=yes">
+    <title>BloomDaily · Time Managament To Do List</title>
+    <!-- Google Fonts & Font Awesome 6 -->
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Quicksand', 'Segoe UI', sans-serif;
+            background: linear-gradient(145deg, #fff5f9 0%, #ffeef4 100%);
+            min-height: 100vh;
+            padding: 1rem;
+            color: #4a3b4a;
+            position: relative;
+        }
+
+        /* soft main card - fully responsive */
+        .dream-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 250, 252, 0.75);
+            backdrop-filter: blur(16px);
+            border-radius: 2rem;
+            box-shadow: 0 20px 40px rgba(198, 128, 158, 0.15), 0 0 0 1px rgba(255, 220, 230, 0.5);
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* responsive padding */
+        @media (min-width: 1024px) {
+            .dream-container {
+                padding: 2rem 2.2rem;
+            }
+            body {
+                padding: 2rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .dream-container {
+                padding: 1rem;
+                border-radius: 1.5rem;
+            }
+            body {
+                padding: 0.8rem;
+            }
+        }
+
+        /* header with feminine vibe & exact wording - responsive */
+        .girly-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 2px dashed #fcd5e5;
+            gap: 1rem;
+        }
+
+        @media (max-width: 760px) {
+            .girly-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .title-bloom h1 {
+            font-size: clamp(1.6rem, 6vw, 2.2rem);
+            font-weight: 700;
+            background: linear-gradient(130deg, #cf7b9c, #b95c84, #e6a1c2);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            letter-spacing: -0.2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .title-bloom h1 i {
+            background: none;
+            color: #e8a2bd;
+            font-size: clamp(1.4rem, 5vw, 2rem);
+            text-shadow: 0 2px 6px #fbc9dd;
+        }
+
+        .soft-tagline {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #bc8da4;
+            margin-top: 4px;
+            letter-spacing: 0.3px;
+        }
+
+        .exact-phrase {
+            font-size: 0.65rem;
+            font-weight: 500;
+            background: rgba(255, 235, 242, 0.8);
+            display: inline-block;
+            padding: 0.2rem 0.8rem;
+            border-radius: 2rem;
+            color: #cc8aab;
+            margin-top: 6px;
+            letter-spacing: 0.2px;
+        }
+
+        /* stats panel - responsive */
+        .stats-flower {
+            background: rgba(255, 242, 247, 0.85);
+            border-radius: 3rem;
+            padding: 0.5rem 1.2rem;
+            display: flex;
+            gap: 1rem;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 4px 10px #fad3e2;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        @media (max-width: 480px) {
+            .stats-flower {
+                gap: 0.8rem;
+                padding: 0.5rem 1rem;
+                width: 100%;
+                justify-content: space-around;
+            }
+            .stat-bud {
+                font-size: 0.8rem;
+            }
+        }
+
+        .stat-bud {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            color: #ad6c88;
+        }
+
+        .stat-bud i {
+            font-size: 1rem;
+            color: #e48aaa;
+        }
+
+        /* 2 column layout - fully responsive */
+        .dashboard-girly {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 900px) {
+            .dashboard-girly {
+                gap: 2rem;
+            }
+        }
+
+        /* add task card */
+        .add-card {
+            flex: 1.2;
+            min-width: 260px;
+            background: #fffbfd;
+            border-radius: 1.8rem;
+            padding: 1.3rem;
+            box-shadow: 0 15px 30px rgba(219, 146, 168, 0.1);
+            border: 1px solid #ffe2ef;
+            transition: all 0.2s;
+        }
+
+        @media (min-width: 768px) {
+            .add-card {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .add-card {
+                min-width: 100%;
+            }
+        }
+
+        .add-card h3 {
+            font-weight: 600;
+            font-size: clamp(1.2rem, 4vw, 1.35rem);
+            margin-bottom: 1rem;
+            color: #bd7f9b;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-flower {
+            margin-bottom: 1rem;
+        }
+
+        .input-flower label {
+            display: block;
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #cb8baa;
+            margin-bottom: 5px;
+        }
+
+        .input-flower input, 
+        .input-flower textarea,
+        .input-flower select {
+            width: 100%;
+            padding: 10px 14px;
+            font-family: 'Quicksand', sans-serif;
+            background: #ffffff;
+            border: 1.5px solid #ffe0ec;
+            border-radius: 1.5rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: 0.2s;
+            outline: none;
+            color: #3d2b35;
+        }
+
+        @media (min-width: 768px) {
+            .input-flower input, 
+            .input-flower textarea,
+            .input-flower select {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+            }
+        }
+
+        .row-petal {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .row-petal .input-flower {
+            flex: 1;
+            min-width: 120px;
+        }
+
+        .btn-add-girly {
+            background: linear-gradient(95deg, #f5b0cb, #e494b6);
+            border: none;
+            width: 100%;
+            padding: 11px;
+            font-weight: 700;
+            color: white;
+            border-radius: 2rem;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 6px 14px rgba(228, 124, 155, 0.3);
+            margin-top: 6px;
+        }
+
+        /* task area */
+        .tasks-gallery {
+            flex: 2.5;
+            min-width: 260px;
+        }
+
+        @media (max-width: 640px) {
+            .tasks-gallery {
+                min-width: 100%;
+            }
+        }
+
+        .filter-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            gap: 0.8rem;
+        }
+
+        .filter-bar h2 {
+            font-weight: 650;
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
+            color: #c384a1;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 6px;
+            background: #fff0f5cc;
+            padding: 4px 10px;
+            border-radius: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn-soft {
+            background: transparent;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.75rem;
+            cursor: pointer;
+            color: #b27c96;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        @media (max-width: 480px) {
+            .filter-btn-soft {
+                padding: 4px 10px;
+                font-size: 0.7rem;
+            }
+        }
+
+        .task-list-scroll {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            max-height: 55vh;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        @media (min-height: 800px) {
+            .task-list-scroll {
+                max-height: 60vh;
+            }
+        }
+
+        /* task item - fully responsive */
+        .task-flower-item {
+            background: rgba(255, 248, 250, 0.96);
+            backdrop-filter: blur(4px);
+            border-radius: 1.5rem;
+            padding: 0.9rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
+            transition: all 0.2s;
+            border: 1px solid #ffe5f0;
+            box-shadow: 0 5px 12px #ffebf1;
+        }
+
+        @media (min-width: 768px) {
+            .task-flower-item {
+                padding: 1rem 1.2rem;
+            }
+        }
+
+        @media (max-width: 550px) {
+            .task-flower-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        .task-info {
+            flex: 4;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 100%;
+        }
+
+        .task-title-row {
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        @media (min-width: 768px) {
+            .task-title-row {
+                font-size: 1rem;
+            }
+        }
+
+        .task-title-text {
+            word-break: break-word;
+        }
+
+        .completed-bloom .task-title-text {
+            text-decoration: line-through;
+            color: #bf98ab;
+        }
+
+        .task-desc-text {
+            font-size: 0.7rem;
+            color: #c38aa6;
+            display: block;
+            word-break: break-word;
+        }
+
+        .task-meta-badge {
+            display: flex;
+            gap: 10px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            flex-wrap: wrap;
+        }
+
+        .time-flower {
+            background: #fceef4;
+            padding: 3px 8px;
+            border-radius: 2rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            color: #be7f9b;
+            font-size: 0.7rem;
+        }
+
+        .priority-flower {
+            padding: 3px 8px;
+            border-radius: 2rem;
+            font-weight: 600;
+            font-size: 0.7rem;
+        }
+
+        .prio-high { background: #ffe2dc; color: #da7a62; }
+        .prio-med { background: #fff0df; color: #e2a466; }
+        .prio-low { background: #e6f7ec; color: #509e6b; }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .action-buttons button {
+            background: transparent;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: 0.1s;
+            color: #cb98b3;
+            padding: 5px;
+            border-radius: 2rem;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @media (min-width: 768px) {
+            .action-buttons button {
+                font-size: 1.2rem;
+                width: 34px;
+            }
+        }
+
+        .empty-dream {
+            text-align: center;
+            padding: 2rem 1rem;
+            background: #fff7fa;
+            border-radius: 1.8rem;
+            color: #d29bb5;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        footer {
+            margin-top: 1.8rem;
+            text-align: center;
+            font-size: 0.65rem;
+            color: #deafc4;
+        }
+
+        /* realistic flower decorations - floating responsive flowers */
+        .floating-flower {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            font-size: clamp(2rem, 8vw, 3.5rem);
+            opacity: 0.5;
+            animation: swayFloat 12s infinite ease-in-out;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.05));
+        }
+
+        /* different flower positions and animations */
+        .flower-1 { bottom: 2%; left: 1%; animation-duration: 14s; opacity: 0.45; }
+        .flower-2 { top: 8%; right: 2%; animation-duration: 18s; opacity: 0.4; transform: scale(0.9); }
+        .flower-3 { bottom: 15%; right: 3%; animation-duration: 20s; opacity: 0.5; }
+        .flower-4 { top: 20%; left: -1%; animation-duration: 16s; opacity: 0.35; transform: scale(0.8); }
+        .flower-5 { bottom: 30%; left: 3%; animation-duration: 22s; opacity: 0.4; }
+
+        @keyframes swayFloat {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(5deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        @media (max-width: 768px) {
+            .flower-3, .flower-5 { display: none; }
+            .flower-1, .flower-2, .flower-4 { opacity: 0.3; font-size: 2.2rem; }
+        }
+
+        @media (max-width: 480px) {
+            .flower-4 { display: none; }
+            .flower-1, .flower-2 { opacity: 0.25; }
+        }
+
+        /* scrollbar styling */
+        .task-list-scroll::-webkit-scrollbar {
+            width: 4px;
+        }
+        .task-list-scroll::-webkit-scrollbar-track {
+            background: #ffe2ed;
+            border-radius: 10px;
+        }
+        .task-list-scroll::-webkit-scrollbar-thumb {
+            background: #e6afc8;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Realistic floating flower decorations -->
+<div class="floating-flower flower-1">🌼🌸</div>
+<div class="floating-flower flower-2">🌷🌻</div>
+<div class="floating-flower flower-3">🌺🌼</div>
+<div class="floating-flower flower-4">🌸🌿</div>
+<div class="floating-flower flower-5">🌻🌷</div>
+
+<div class="dream-container">
+    <div class="girly-header">
+        <div class="title-bloom">
+            <h1><i class="fas fa-calendar-check"></i> JollaiDaily <span style="font-size: 1rem; background: none; color: #da9bbc;">✦</span></h1>
+            <div class="soft-tagline"></div>
+            <!-- exact wording "time managament to do list" appears right here, unchanged -->
+            <div class="exact-phrase"><i class="fas fa-hourglass-half"></i> time managament to do list</div>
+        </div>
+        <div class="stats-flower" id="statsPanel">
+            <div class="stat-bud"><i class="fas fa-seedling"></i> <span id="totalTasks">0</span> tasks</div>
+            <div class="stat-bud"><i class="fas fa-check-double"></i> <span id="completedTasks">0</span> done</div>
+            <div class="stat-bud"><i class="fas fa-hourglass-half"></i> <span id="pendingTasks">0</span> to go</div>
+        </div>
+    </div>
+
+    <div class="dashboard-girly">
+        <!-- left: add new task -->
+        <div class="add-card">
+            <h3><i class="fas fa-feather-alt"></i> add new task</h3>
+            <div class="input-flower">
+                <label>✿ task name *</label>
+                <input type="text" id="taskTitle" placeholder="add task name..." autocomplete="off">
+            </div>
+            <div class="input-flower">
+                <label>✿ notes (optional)</label>
+                <textarea id="taskDesc" rows="2" placeholder="add details, ideas..."></textarea>
+            </div>
+            <div class="row-petal">
+                <div class="input-flower">
+                    <label><i class="far fa-calendar-alt"></i> date</label>
+                    <input type="date" id="taskDate">
+                </div>
+                <div class="input-flower">
+                    <label><i class="far fa-clock"></i> time (12hr)</label>
+                    <input type="time" id="taskTime" step="60">
+                </div>
+            </div>
+            <div class="input-flower">
+                <label>✿ priority vibe</label>
+                <select id="taskPriority">
+                    <option value="Low">🍃 Low</option>
+                    <option value="Medium" selected>🌸 Medium</option>
+                    <option value="High">🌺 High</option>
+                </select>
+            </div>
+            <button class="btn-add-girly" id="addTaskBtn"><i class="fas fa-plus-circle"></i> add to my list</button>
+        </div>
+
+        <!-- right: task list with filter -->
+        <div class="tasks-gallery">
+            <div class="filter-bar">
+                <h2><i class="fas fa-clipboard-list"></i> my tasks</h2>
+                <div class="filter-buttons">
+                    <button class="filter-btn-soft active" data-filter="all">all</button>
+                    <button class="filter-btn-soft" data-filter="pending">active</button>
+                    <button class="filter-btn-soft" data-filter="completed">completed</button>
+                </div>
+            </div>
+            <div class="task-list-scroll" id="taskList">
+                <div class="empty-dream">
+                    <i class="fas fa-daisy"></i> ✿ your list is quiet. add a new task! ✿
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>♡ Sipag-sipagan ♡</footer>
+</div>
+
+<script>
+    // ---------- data model ----------
+    let tasks = [];
+    let currentFilter = "all";
+
+    // DOM elements
+    const taskListContainer = document.getElementById('taskList');
+    const totalSpan = document.getElementById('totalTasks');
+    const completedSpan = document.getElementById('completedTasks');
+    const pendingSpan = document.getElementById('pendingTasks');
+    const titleInput = document.getElementById('taskTitle');
+    const descInput = document.getElementById('taskDesc');
+    const dateInput = document.getElementById('taskDate');
+    const timeInput = document.getElementById('taskTime');
+    const prioritySelect = document.getElementById('taskPriority');
+    const addBtn = document.getElementById('addTaskBtn');
+
+    // Helper: convert 24h string (HH:MM) to 12h format with AM/PM
+    function convertTo12HourFormat(time24) {
+        if (!time24) return "";
+        let [hours, minutes] = time24.split(':');
+        let hourNum = parseInt(hours, 10);
+        const ampm = hourNum >= 12 ? 'PM' : 'AM';
+        let hour12 = hourNum % 12;
+        if (hour12 === 0) hour12 = 12;
+        return `${hour12}:${minutes} ${ampm}`;
+    }
+
+    // Helper: format date and time for display (always 12hr)
+    function formatDateAndTime(dateStr, time24Str) {
+        if (!dateStr) return "no date set";
+        let display = dateStr;
+        if (time24Str) {
+            const time12 = convertTo12HourFormat(time24Str);
+            display += ` · ${time12}`;
+        }
+        return display;
+    }
+
+    // Helper: set default time to current time in 24h (HTML time input uses 24h)
+    function setDefaultDateTime() {
+        if (!dateInput.value) {
+            const today = new Date();
+            const yyyy = today.getFullYear();
+            const mm = String(today.getMonth() + 1).padStart(2, '0');
+            const dd = String(today.getDate()).padStart(2, '0');
+            dateInput.value = `${yyyy}-${mm}-${dd}`;
+        }
+        if (!timeInput.value) {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            timeInput.value = `${hours}:${minutes}`;
+        }
+    }
+    setDefaultDateTime();
+
+    // LocalStorage
+    function loadTasksFromStorage() {
+        const stored = localStorage.getItem('bloomdaily_tasks');
+        if (stored) {
+            try {
+                tasks = JSON.parse(stored);
+                tasks = tasks.map(t => ({
+                    id: t.id,
+                    title: t.title,
+                    description: t.description || '',
+                    date: t.date,
+                    time: t.time || '',
+                    priority: t.priority || 'Medium',
+                    completed: t.completed || false,
+                    createdAt: t.createdAt || Date.now()
+                }));
+            } catch(e) { tasks = []; }
+        }
+        if (tasks.length === 0) {
+            const today = new Date().toISOString().split('T')[0];
+            const tomorrow = new Date(Date.now() + 86400000).toISOString().split('T')[0];
+            tasks = [
+               
+            ];
+        }
+        renderAll();
+    }
+
+    function saveToLocal() {
+        localStorage.setItem('bloomdaily_tasks', JSON.stringify(tasks));
+    }
+
+    function escapeHtmlSoft(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function renderAll() {
+        const total = tasks.length;
+        const completedCount = tasks.filter(t => t.completed).length;
+        const pendingCount = total - completedCount;
+        totalSpan.innerText = total;
+        completedSpan.innerText = completedCount;
+        pendingSpan.innerText = pendingCount;
+
+        let filtered = [...tasks];
+        if (currentFilter === 'pending') filtered = tasks.filter(t => !t.completed);
+        else if (currentFilter === 'completed') filtered = tasks.filter(t => t.completed);
+        
+        filtered.sort((a, b) => {
+            if (currentFilter === 'all') {
+                if (a.completed !== b.completed) return a.completed ? 1 : -1;
+            }
+            const prioRank = { 'High': 3, 'Medium': 2, 'Low': 1 };
+            const rankA = prioRank[a.priority] || 2;
+            const rankB = prioRank[b.priority] || 2;
+            if (rankA !== rankB) return rankB - rankA;
+            const datetimeA = new Date(`${a.date}T${a.time || '00:00'}`);
+            const datetimeB = new Date(`${b.date}T${b.time || '00:00'}`);
+            if (isNaN(datetimeA)) return 1;
+            if (isNaN(datetimeB)) return -1;
+            return datetimeA - datetimeB;
+        });
+
+        if (filtered.length === 0) {
+            taskListContainer.innerHTML = `<div class="empty-dream"><i class="fas fa-leaf"></i> ✿ no tasks here — time to add something beautiful ✿</div>`;
+            return;
+        }
+
+        taskListContainer.innerHTML = filtered.map(task => {
+            const completedClass = task.completed ? 'completed-bloom' : '';
+            let priorityClass = '';
+            let priorityLabel = '';
+            if (task.priority === 'High') { priorityClass = 'prio-high'; priorityLabel = '🌺 High priority'; }
+            else if (task.priority === 'Medium') { priorityClass = 'prio-med'; priorityLabel = '🌸 Medium priority'; }
+            else { priorityClass = 'prio-low'; priorityLabel = '🍃 Low priority'; }
+            
+            const dateTimeDisplay = formatDateAndTime(task.date, task.time);
+            return `
+                <div class="task-flower-item ${completedClass}" data-id="${task.id}">
+                    <div class="task-info">
+                        <div class="task-title-row">
+                            <span class="task-title-text">${escapeHtmlSoft(task.title)}</span>
+                        </div>
+                        ${task.description ? `<div class="task-desc-text">${escapeHtmlSoft(task.description)}</div>` : ''}
+                        <div class="task-meta-badge">
+                            <span class="time-flower"><i class="far fa-clock"></i> ${escapeHtmlSoft(dateTimeDisplay)}</span>
+                            <span class="priority-flower ${priorityClass}">${priorityLabel}</span>
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button class="complete-task-btn" title="${task.completed ? 'undo complete' : 'mark complete'}"><i class="fas ${task.completed ? 'fa-undo-alt' : 'fa-check-circle'}"></i></button>
+                        <button class="delete-task-btn" title="remove task"><i class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        document.querySelectorAll('.complete-task-btn').forEach(btn => {
+            const parentDiv = btn.closest('.task-flower-item');
+            if (parentDiv) {
+                const id = parseInt(parentDiv.dataset.id);
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    toggleComplete(id);
+                });
+            }
+        });
+        document.querySelectorAll('.delete-task-btn').forEach(btn => {
+            const parentDiv = btn.closest('.task-flower-item');
+            if (parentDiv) {
+                const id = parseInt(parentDiv.dataset.id);
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    deleteTask(id);
+                });
+            }
+        });
+    }
+
+    function toggleComplete(id) {
+        const task = tasks.find(t => t.id === id);
+        if (task) {
+            task.completed = !task.completed;
+            saveToLocal();
+            renderAll();
+        }
+    }
+
+    function deleteTask(id) {
+        tasks = tasks.filter(t => t.id !== id);
+        saveToLocal();
+        renderAll();
+    }
+
+    function addNewTask() {
+        let title = titleInput.value.trim();
+        if (!title) {
+            alert("please add a task name 🩷");
+            return;
+        }
+        let description = descInput.value.trim();
+        let date = dateInput.value;
+        let time24 = timeInput.value;
+        let priority = prioritySelect.value;
+
+        if (!date) {
+            const today = new Date().toISOString().split('T')[0];
+            date = today;
+        }
+        if (!time24) time24 = "09:00";
+
+        const newTask = {
+            id: Date.now(),
+            title: title,
+            description: description,
+            date: date,
+            time: time24,
+            priority: priority,
+            completed: false,
+            createdAt: Date.now()
+        };
+        tasks.unshift(newTask);
+        saveToLocal();
+        titleInput.value = '';
+        descInput.value = '';
+        setDefaultDateTime();
+        prioritySelect.value = 'Medium';
+        renderAll();
+        const scrollDiv = document.querySelector('.task-list-scroll');
+        if (scrollDiv) scrollDiv.scrollTop = 0;
+    }
+
+    function initFilters() {
+        const filterBtns = document.querySelectorAll('.filter-btn-soft');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const filterValue = btn.dataset.filter;
+                if (filterValue) {
+                    currentFilter = filterValue;
+                    filterBtns.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    renderAll();
+                }
+            });
+        });
+    }
+
+    addBtn.addEventListener('click', addNewTask);
+    titleInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') addNewTask();
+    });
+
+    loadTasksFromStorage();
+    initFilters();
+
+    window.addEventListener('focus', () => {
+        renderAll();
+    });
+</script>
+</body>
+</html>
